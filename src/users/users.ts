@@ -1,9 +1,11 @@
 import { IncomingUser } from '../types/incomingData';
 import { Command } from '../types/command';
+import { userDB, wsClients } from '../data/userData';
+import WebSocketExt from '../types/websocketExt';
 
 let indexSocket = 0;
 
-export const registerUsers = (ws: WebSocketEx, data: IncomingUser) => {
+export const registerUsers = (ws: WebSocketExt, data: IncomingUser) => {
   const { name, password } = data;
 
   const res = {
@@ -37,4 +39,16 @@ export const registerUsers = (ws: WebSocketEx, data: IncomingUser) => {
     indexSocket++;
   }
   ws.send(JSON.stringify(res));
+};
+
+const addUser = (name: string, password: string, users = userDB) => {
+  const newUser = {
+    name: name,
+    password: password,
+    index: users.length,
+  };
+
+  users.push(newUser);
+
+  return newUser;
 };
