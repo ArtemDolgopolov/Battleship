@@ -1,5 +1,4 @@
 import { Command } from '../types/command';
-import { RoomGame } from '../types/responseData';
 import { IncomingRoom } from '../types/incomingData';
 import WebSocketEx from '../types/websocketExt';
 import { userDB, wsClients } from '../data/userData';
@@ -47,15 +46,21 @@ export class RoomsController {
      const newGame: GameInfo = {
        idGame: idGame,
        players: [
-         {
-           idPlayer: 0,
-           idUser: this.ws.id,
-         },
-         {
-           idPlayer: 1,
-           idUser: searchRoom.roomUsers[0].index,
-         },
-       ],
+        {
+          idPlayer: this.ws.id,
+          indexSocket: this.ws.indexSocket,
+          shipInfo: [],
+          shipsCoord: [],
+          checkWin: 0,
+        },
+        {
+          idPlayer: searchRoom.roomUsers[0].index,
+          indexSocket: searchRoom.indexSocket,
+          shipInfo: [],
+          shipsCoord: [],
+          checkWin: 0,
+        },
+      ],
      };
 
      games.set(newGame.idGame, newGame);
