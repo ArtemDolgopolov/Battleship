@@ -4,6 +4,7 @@ import { dataParser } from '../utils/dataParser';
 import { WSController } from './wsController';
 import WebSocketExt from '../types/websocketExt';
 import { wsClients } from '../data/userData';
+import { GameController } from '../game/gameController';
 import { rooms } from '../data/gameData';
 import { RoomsController } from '../room/rooms';
 import { IncomingMessage } from 'node:http';
@@ -31,6 +32,8 @@ wss.on('connection', (ws: WebSocketExt, req: IncomingMessage) => {
 
   ws.on('close', () => {
     if (ws.indexSocket !== undefined) {
+      new GameController(ws).isPlayerExit(ws.indexSocket);
+
       const searchIndexRoom = rooms.findIndex((user) => {
         return user.indexSocket === ws.indexSocket;
       });
